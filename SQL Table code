@@ -1,0 +1,178 @@
+create database Coursework2
+GO
+USE Coursework2
+GO
+
+CREATE TABLE WORKSHOP_SCHEDULE (
+workshop_id Integer NOT NULL,
+workshop_name char(10) Not Null,
+workshop_time time NOT NULL,
+workshop_date date NOT NULL,
+description char(55) NOT NULL,
+CONSTRAINT WORKSHOP_SCHEDULE_PK PRIMARY KEY (workshop_id)
+);
+
+CREATE TABLE PERSONAL_INFORMATION (
+user_id Integer NOT NULL,
+firstname char(25) NOT NULL,
+lastname char(25) NOT NULL,
+phone_number char(13) NOT NULL,
+email char(55) NOT NULL,
+CONSTRAINT PERSONAL_INFORMAION_PK PRIMARY KEY (user_id),
+);
+
+CREATE TABLE PEER_REVIEW (
+availability_id Integer NOT NULL,
+assigned_review char(10) NOT NULL,
+assigned_date date NOT NULL,
+completion_status bit NOT NULL,
+CONSTRAINT PEER_REVIEW_PK PRIMARY KEY (availability_id),
+);
+
+CREATE TABLE INSTITUTE (
+institute_id Integer NOT NULL,
+institute_type char(10) NOT NULL,
+institute_address char(55) NOT NULL,
+institute_email char(55) NOT NULL,
+CONSTRAINT INSTITUTE_PK PRIMARY KEY (institute_id),
+);
+
+CREATE TABLE FELLOWSHIP_SUBMISSION (
+fellowship_submission_id Integer NOT NULL,
+fellowship_submission_date date NOT NULL,
+institute_id Integer NOT NULL,
+CONSTRAINT FELLOWSHIP_SUBMISSION_PK PRIMARY KEY (fellowship_submission_id),
+CONSTRAINT INSTITUTE_FK_FS FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+);
+
+CREATE TABLE FELLOWSHIP_PASS (
+fellowship_pass_id Integer NOT NULL,
+fellowship_pass_date date NOT NULL,
+institute_id Integer NOT NULL,
+CONSTRAINT FELLOWSHIP_PASS_PK PRIMARY KEY (fellowship_pass_id),
+CONSTRAINT INSTITUTE_FK_FP FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+);
+
+CREATE TABLE FELLOWSHIP_REFERRED (
+fellowship_referred_id Integer NOT NULL,
+fellowship_referred_date date NOT NULL,
+institute_id Integer NOT NULL,
+CONSTRAINT FELLOWSHIP_REFERRED_PK PRIMARY KEY (fellowship_referred_id),
+CONSTRAINT INSTITUTE_FK_FR FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+);
+
+CREATE TABLE FELLOWSHIP_FAILED (
+fellowship_failed_id Integer NOT NULL,
+fellowship_failed_date date NOT NULL,
+institute_id Integer NOT NULL,
+CONSTRAINT FELLOWSHIP_FAILED_PK PRIMARY KEY (fellowship_failed_id),
+CONSTRAINT INSTITUTE_FK_FF FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+);
+
+CREATE TABLE FELLOWSHIP (
+fellowship_id Integer NOT NULL,
+fellowship_submission_id Integer NULL,
+fellowship_pass_id Integer NULL,
+fellowship_referred_id Integer NULL,
+fellowship_failed_id Integer NULL,
+fellowship_category char(10) NOT NULL,
+CONSTRAINT FELLOWSHIP_PK PRIMARY KEY (fellowship_id),
+CONSTRAINT FELLOWSHIP_SUBMISSION__FK FOREIGN KEY (fellowship_submission_id)
+	REFERENCES FELLOWSHIP_SUBMISSION (fellowship_submission_id),
+CONSTRAINT FELLOWSHIP_PASS_FK FOREIGN KEY (fellowship_pass_id)
+	REFERENCES FELLOWSHIP_PASS (fellowship_pass_id),
+CONSTRAINT FELLOWSHIP_REFERRED_FK FOREIGN KEY (fellowship_referred_id)
+	REFERENCES FELLOWSHIP_REFERRED (fellowship_referred_id),
+CONSTRAINT FELLOWSHIP_FAILED_FK FOREIGN KEY (fellowship_failed_id)
+	REFERENCES FELLOWSHIP_FAILED (fellowship_failed_id),
+);
+
+CREATE TABLE PEER (
+peer_id Integer NOT NULL,
+user_id Integer NOT NULL,
+institute_id Integer NOT NULL,
+fellowship_id Integer NULL,
+last_active date NOT NULL,
+availability_id Integer NOT NULL,
+attended_workshop bit NOT NULL,
+success_rate Integer NOT NULL,
+CONSTRAINT PEER_PK PRIMARY KEY (peer_id),
+CONSTRAINT PERSONAL_INFORMATION__FK_p FOREIGN KEY (user_id)
+	REFERENCES PERSONAL_INFORMATION (user_id),
+CONSTRAINT INSTITUTE_FK_P FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+CONSTRAINT FELLOWSHIP_FK_P FOREIGN KEY (fellowship_id)
+	REFERENCES FELLOWSHIP (fellowship_id),
+CONSTRAINT PEER_REVIEW_FK_P FOREIGN KEY (availability_id)
+	REFERENCES PEER_REVIEW (availability_id),
+);
+
+CREATE TABLE PARTICIPANT (
+participant_id Integer NOT NULL,
+user_id Integer NOT NULL,
+enrolement_expiration date NOT NULL,
+submission_date date NOT NULL,
+account_expiration date NOT NULL,
+institute_id Integer NOT NULL,
+fellowship_id Integer NOT NULL,
+attended_mandatory_workshop bit NOT NULL,
+CONSTRAINT PARTICIPANT_PK PRIMARY KEY (participant_id),
+CONSTRAINT PERSONAL_INFORMATION_FK_PT FOREIGN KEY (user_id)
+	REFERENCES PERSONAL_INFORMATION (user_id),
+CONSTRAINT INSTITUTE_FK_PT FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+CONSTRAINT FELLOWSHIP__FK_PT FOREIGN KEY (fellowship_id)
+	REFERENCES FELLOWSHIP (fellowship_id),
+);
+
+CREATE TABLE MENTOR (
+mentor_id Integer NOT NULL,
+user_id Integer	NOT NULL,
+institute_id Integer NOT NULL,
+fellowship_id Integer NULL,
+last_active date NOT NULL,
+availability_id Integer NOT NULL,
+attended_mandatory_workshop bit NOT NULL,
+other char(55) NULL,
+CONSTRAINT MENTOR_PK PRIMARY KEY (mentor_id),
+CONSTRAINT PERSONAL_INFORMATION_FK_M FOREIGN KEY (user_id)
+	REFERENCES PERSONAL_INFORMATION (user_id),
+CONSTRAINT INSTITUTE_FK_M FOREIGN KEY (institute_id)
+	REFERENCES INSTITUTE (institute_id),
+CONSTRAINT FELLOWSHIP_FK_M FOREIGN KEY (fellowship_id)
+	REFERENCES FELLOWSHIP (fellowship_id),
+CONSTRAINT PEER_REVIEW_FK_M FOREIGN KEY (availability_id)
+	REFERENCES PEER_REVIEW (availability_id),
+);
+
+CREATE TABLE BOOKING (
+booking_id Integer NOT NULL,
+workshop_id Integer NOT NULL,
+participant_id Integer NOT NULL,
+mentor_id Integer NOT NULL,
+workshop_availability Integer NOT NULL,
+CONSTRAINT BOOKING_PK PRIMARY KEY (booking_id),
+CONSTRAINT WORKSHOP_SCHEDULE_Relationship FOREIGN KEY (workshop_id)
+	REFERENCES WORKSHOP_SCHEDULE (workshop_id),
+CONSTRAINT PARTICIPANT_Relationship FOREIGN KEY (participant_id)
+	REFERENCES PARTICIPANT (participant_id),
+CONSTRAINT MENTOR_Relationship FOREIGN KEY (mentor_id)
+	REFERENCES MENTOR (mentor_id),
+);
+
+CREATE TABLE WORKSHOP_ATTENDANCE (
+attendance_id Integer NOT NULL,
+booking_id Integer NOT NULL,
+participant_id Integer NOT NULL,
+mentor_id Integer NOT NULL,
+institute_id Integer NOT NULL,
+fellowship_id Integer NOT NULL,
+CONSTRAINT WORKSHOP_ATTENDANCE_PK PRIMARY KEY (attendance_id),
+CONSTRAINT BOOKING_FK_WA FOREIGN KEY (booking_id)
+	REFERENCES BOOKING (booking_id),
+);
+
