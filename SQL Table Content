@@ -1,0 +1,311 @@
+USE Coursework2
+GO
+ALTER PROCEDURE dbo.spReport1
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT participant_id, PERSONAL_INFORMATION.user_id, PARTICIPANT.user_id firstname, lastname
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION;
+END
+
+
+
+Report 2 Persistent Stored Module code:
+
+CREATE PROCEDURE dbo.spReport2
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT participant_id, PERSONAL_INFORMATION.user_id, PARTICIPANT.user_id enrolement_expiration
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+	WHERE [enrolement_expiration] <= 21/09/2019
+END;
+
+
+
+Report 3 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport3
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT participant_id, PERSONAL_INFORMATION.user_id, PARTICIPANT.user_id submission_date
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+	WHERE [submission_date] = '2019/04/30'
+END
+
+
+
+Report 4 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport4
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT participant_id, PERSONAL_INFORMATION.user_id, PARTICIPANT.user_id enrolement_expiration
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+	WHERE [enrolement_expiration] <= '2019/04/30'
+END
+Report 5 Persistent Stored Modules code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport5
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id participant_id, PARTICIPANT.user_id, enrolement_expiration
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+END
+
+
+Report 6 Persistent Stored Modules code:
+
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport6
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id participant_id, PARTICIPANT.user_id, fellowship_id
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+END
+
+
+Report 7 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport7
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id participant_id, PARTICIPANT.user_id, institute_id, fellowship_id
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+END
+
+Report 8 Persistent Stored Module code:
+
+USE Coursework2
+GO
+ALTER PROCEDURE dbo.spReport8
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id participant_id, PARTICIPANT.user_id, attended_mandatory_workshop
+	FROM dbo.PARTICIPANT, dbo.PERSONAL_INFORMATION
+	WHERE [attended_mandatory_workshop] = '0';
+END
+Report 9 Persistent Stored Modules code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport9
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, institute_id
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION
+END
+
+Report 10 Persistent Stored Modules code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport10
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, institute_id
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION
+	WHERE [institute_id] = 'lsbu'
+END
+
+Report 11 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport11
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, INSTITUTE.institute_id, institute_type
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE
+	WHERE INSTITUTE.institute_id = 'LSBU'
+END
+
+Report 12 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport212
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, last_active
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE
+	WHERE [last_active] >= '2019/04/23';
+END
+
+
+Report 13 Persistent Stored Module code:
+
+USE Coursework2
+GO
+ALTER PROCEDURE dbo.spReport13
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, MENTOR.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE PEER_REVIEW.completion_status = 1 ;
+END
+
+Report 14 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport14
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, MENTOR.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE PEER_REVIEW.completion_status = 0 ;
+END
+
+Report 15 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport15
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, MENTOR.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE (PEER_REVIEW.completion_status = 0) 
+	OR (last_active <= '2019/04/21');
+END
+
+Report 16 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport16
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, institute_type, fellowship_id
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE last_active <= '2019/04/21';
+END
+
+Report 17 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport17
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, attended_mandatory_workshop
+	FROM dbo.MENTOR, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE MENTOR.attended_mandatory_workshop = '0'
+END
+
+Report 18 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport18
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id peer_id, PEER.user_id, institute_id
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION
+END
+
+Report 19 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport19
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, PEER.user_id, institute_id
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION
+	WHERE [institute_id] = 'lsbu'
+END
+
+Report 20 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport20
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id peer_id, PEER.user_id, INSTITUTE.institute_id, institute_type
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE
+	WHERE INSTITUTE.institute_id = 'LSBU'
+END
+
+Report 21 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport21
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id peer_id, PEER.user_id, firstname, last_active
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE
+	WHERE [last_active] >= '2019/04/23';
+END
+
+Report 22 Persistent Stored Module code:
+
+USE Coursework2
+GO
+ALTER PROCEDURE dbo.spReport22
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id peer_id, PEER.user_id, firstname, PEER.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE PEER_REVIEW.completion_status = 1;
+END
+
+Report 23 Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport23
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id mentor_id, MENTOR.user_id, firstname, MENTOR.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE PEER_REVIEW.completion_status = 0 ;
+END
+
+Report 24: Persistent Stored Module code:
+
+USE Coursework2
+GO
+CREATE PROCEDURE dbo.spReport24
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT PERSONAL_INFORMATION.user_id peer_id, PEER.user_id, firstname, PEER.availability_id,PEER_REVIEW.completion_status
+	FROM dbo.PEER, dbo.PERSONAL_INFORMATION, dbo.INSTITUTE, dbo.PEER_REVIEW
+	WHERE (PEER_REVIEW.completion_status = 0) 
+	OR (last_active <= '2019/04/21');
+END
